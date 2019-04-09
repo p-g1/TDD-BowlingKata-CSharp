@@ -1,21 +1,17 @@
-﻿namespace BowlingKata.Source
+﻿using System.Linq;
+
+namespace BowlingKata.Source
 {
     public class Bowling
     {
         public int CalculateScore(string scoreboard)
         {
-            if (scoreboard == "1-|--|--|--|--|--|--|--|--|--||--")
+
+            if (char.IsDigit(scoreboard.First()))
             {
-                return 1;
+                return int.Parse(scoreboard.First().ToString());
             }
-            if (scoreboard == "2-|--|--|--|--|--|--|--|--|--||--")
-            {
-                return 2;
-            }
-            if (scoreboard == "9-|--|--|--|--|--|--|--|--|--||--")
-            {
-                return 9;
-            }
+
             return 0;
         }
     }
