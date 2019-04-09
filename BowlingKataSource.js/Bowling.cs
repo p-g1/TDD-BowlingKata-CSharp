@@ -8,21 +8,24 @@ namespace BowlingKata.Source
     {
         public int CalculateScore(string scoreboard)
         {
-            if (char.IsDigit(scoreboard.Skip(1).First()) && char.IsDigit(scoreboard.First()))
+            var firstThrow = scoreboard.First();
+            var secondThrow = scoreboard.Skip(1).First();
+            return AddValues(firstThrow, secondThrow);
+        }
+
+        private static int AddValues(char firstThrow, char secondThrow)
+        {
+            if (firstThrow == '-')
             {
-                return int.Parse(scoreboard.Skip(1).First().ToString()) + int.Parse(scoreboard.First().ToString());
+                firstThrow = '0';
             }
 
-            if (char.IsDigit(scoreboard.First()))
+            if (secondThrow == '-')
             {
-                return int.Parse(scoreboard.First().ToString());
-            }
-            if (char.IsDigit(scoreboard.Skip(1).First()))
-            {
-                return int.Parse(scoreboard.Skip(1).First().ToString());
+                secondThrow = '0';
             }
 
-            return 0;
+            return int.Parse(firstThrow.ToString()) + int.Parse(secondThrow.ToString());
         }
     }
 }
