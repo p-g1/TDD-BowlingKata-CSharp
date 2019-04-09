@@ -27,8 +27,7 @@ namespace BowlingKata.Tests
             var result = bowling.CalculateScore(scoreBoard);
             result.Should().Be(expectedScore);
         }
-
-
+        
 
     }
 }

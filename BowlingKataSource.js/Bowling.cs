@@ -24,7 +24,7 @@ namespace BowlingKata.Source
             {
                 secondThrow = '0';
             }
-
+            
             return int.Parse(firstThrow.ToString()) + int.Parse(secondThrow.ToString());
         }
     }
