@@ -11,12 +11,24 @@ namespace BowlingKata.Tests
         [TestCase("1-|--|--|--|--|--|--|--|--|--||--", 1)]
         [TestCase("2-|--|--|--|--|--|--|--|--|--||--", 2)]
         [TestCase("9-|--|--|--|--|--|--|--|--|--||--", 9)]
-        public void ReturnExpectedScore_WhenCalculating_GivenScoreBoard(string scoreBoard, int expectedScore)
+        [TestCase("-1|--|--|--|--|--|--|--|--|--||--", 1)]
+        [TestCase("-9|--|--|--|--|--|--|--|--|--||--", 9)]
+        public void ReturnExpectedScore_WhenCalculatingSingleFrame_GivenScoreBoardWithSingleThrow(string scoreBoard, int expectedScore)
         {
             var bowling = new Bowling();
             var result = bowling.CalculateScore(scoreBoard);
             result.Should().Be(expectedScore);
         }
+
+        [TestCase("18|--|--|--|--|--|--|--|--|--||--", 9)]
+        public void ReturnExpectedScore_WhenCalculatingSingleFrame_GivenScoreBoardTwoThrows(string scoreBoard, int expectedScore)
+        {
+            var bowling = new Bowling();
+            var result = bowling.CalculateScore(scoreBoard);
+            result.Should().Be(expectedScore);
+        }
+
+
 
     }
 }
