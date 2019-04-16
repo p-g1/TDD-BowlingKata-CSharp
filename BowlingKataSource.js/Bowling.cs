@@ -10,7 +10,16 @@ namespace BowlingKata.Source
         {
             var firstThrow = scoreboard.First();
             var secondThrow = scoreboard.Skip(1).First();
-            return AddValues(firstThrow, secondThrow);
+
+            var thirdThrow = scoreboard.Skip(3).First();
+            if (thirdThrow == '-')
+            {
+                thirdThrow = '0';
+            }
+
+            var frameOneScore = AddValues(firstThrow, secondThrow);
+
+            return frameOneScore + int.Parse(thirdThrow.ToString());
         }
 
         private static int AddValues(char firstThrow, char secondThrow)
@@ -27,5 +36,6 @@ namespace BowlingKata.Source
             
             return int.Parse(firstThrow.ToString()) + int.Parse(secondThrow.ToString());
         }
+
     }
 }
