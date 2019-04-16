@@ -6,10 +6,14 @@
     {
         public int CalculateScore(string scoreboard)
         {
-            var firstThrow = scoreboard.First().ReplaceMissCharacter();
-            var secondThrow = scoreboard.Skip(1).First().ReplaceMissCharacter();
-            var thirdThrow = scoreboard.Skip(3).First().ReplaceMissCharacter();
-            var fourthThrow = scoreboard.Skip(4).First().ReplaceMissCharacter();
+            var frames = scoreboard.Split('|');
+            var firstFrame = frames[0];
+            var secondFrame = frames[1];
+
+            var firstThrow = firstFrame.First().ReplaceMissCharacter();
+            var secondThrow = firstFrame.Last().ReplaceMissCharacter();
+            var thirdThrow = secondFrame.First().ReplaceMissCharacter();
+            var fourthThrow = secondFrame.Last().ReplaceMissCharacter();
 
             return (firstThrow + secondThrow + thirdThrow + fourthThrow);
         }
