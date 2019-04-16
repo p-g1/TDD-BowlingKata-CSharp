@@ -33,7 +33,7 @@ namespace BowlingKata.Tests
         [TestCase("22|1-|--|--|--|--|--|--|--|--||--", 5)]
         [TestCase("22|13|--|--|--|--|--|--|--|--||--", 8)]
         [TestCase("22|-3|--|--|--|--|--|--|--|--||--", 7)]
-        public void ReturnExpectedScore_WhenCalculatingTwoFrames_GivenScoreBoardThreeThrows(string scoreBoard,
+        public void ReturnExpectedScore_WhenCalculatingTwoFrames_GivenScoreBoardTwoFrames(string scoreBoard,
             int expectedScore)
         {
             new Bowling()
