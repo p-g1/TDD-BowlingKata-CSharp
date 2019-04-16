@@ -7,15 +7,22 @@
         public int CalculateScore(string scoreboard)
         {
             var frames = scoreboard.Split('|');
-            var firstFrame = frames[0];
-            var secondFrame = frames[1];
 
-            var firstThrow = firstFrame.First().ReplaceMissCharacter();
-            var secondThrow = firstFrame.Last().ReplaceMissCharacter();
-            var thirdThrow = secondFrame.First().ReplaceMissCharacter();
-            var fourthThrow = secondFrame.Last().ReplaceMissCharacter();
+            var score = 0;
 
-            return (firstThrow + secondThrow + thirdThrow + fourthThrow);
+            foreach (var frame in frames)
+            {
+                if (string.IsNullOrEmpty(frame))
+                {
+                    continue;
+                }
+                var firstThrow = frame.First().ReplaceMissCharacter();
+                var secondThrow = frame.Last().ReplaceMissCharacter();
+
+                score += (firstThrow + secondThrow);
+            }
+
+            return score;
         }
 
     }
