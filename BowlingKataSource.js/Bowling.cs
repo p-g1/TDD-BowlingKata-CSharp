@@ -12,17 +12,11 @@ namespace BowlingKata.Source
             var secondThrow = scoreboard.Skip(1).First();
 
             var thirdThrow = scoreboard.Skip(3).First();
-            if (thirdThrow == '-')
-            {
-                thirdThrow = '0';
-            }
 
-            var frameOneScore = AddValues(firstThrow, secondThrow);
-
-            return frameOneScore + int.Parse(thirdThrow.ToString());
+            return AddValues(firstThrow, secondThrow, thirdThrow);
         }
 
-        private static int AddValues(char firstThrow, char secondThrow)
+        private static int AddValues(char firstThrow, char secondThrow, char thirdThrow)
         {
             if (firstThrow == '-')
             {
@@ -33,8 +27,15 @@ namespace BowlingKata.Source
             {
                 secondThrow = '0';
             }
-            
-            return int.Parse(firstThrow.ToString()) + int.Parse(secondThrow.ToString());
+
+            if (thirdThrow == '-')
+            {
+                thirdThrow = '0';
+            }
+
+            return int.Parse(firstThrow.ToString()) 
+                   + int.Parse(secondThrow.ToString()) 
+                   + int.Parse(thirdThrow.ToString());
         }
 
     }
