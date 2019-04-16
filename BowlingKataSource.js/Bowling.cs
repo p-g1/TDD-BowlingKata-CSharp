@@ -16,8 +16,8 @@
                 {
                     continue;
                 }
-                var firstThrow = frame.First().ReplaceMissCharacter();
-                var secondThrow = frame.Last().ReplaceMissCharacter();
+                var firstThrow = frame.First().ParseThrowCharacters();
+                var secondThrow = frame.Last().ParseThrowCharacters();
 
                 score += (firstThrow + secondThrow);
             }
@@ -29,12 +29,24 @@
 
     internal static class BowlingExtensions
     {
-        internal static int ReplaceMissCharacter(this char toReplace)
+        private const char Miss = '-';
+        private const char Strike = 'X';
+
+        internal static int ParseThrowCharacters(this char toReplace)
         {
-            return toReplace == '-' 
-                ? 0 
-                : int.Parse(toReplace.ToString());
+            if (toReplace == Miss)
+            {
+                return 0;
+            }
+
+            if (toReplace == Strike)
+            {
+                return 10;
+            }
+
+            return int.Parse(toReplace.ToString());
         }
+
     }
 
 }

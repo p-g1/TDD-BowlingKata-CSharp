@@ -41,5 +41,13 @@ namespace BowlingKata.Tests
                 .Should().Be(expectedScore);
         }
 
+        [TestCase("X-|--|--|--|--|--|--|--|--|--||--", 10)]
+        public void ReturnExpectedScore_WhenCalculatingScore_GivenSomeStrikes(string scoreBoard,
+            int expectedResult)
+        {
+            new Bowling()
+                .CalculateScore(scoreBoard)
+                .Should().Be(expectedResult);
+        }
     }
 }
