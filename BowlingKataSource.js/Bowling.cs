@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BowlingKata.Source
+﻿namespace BowlingKata.Source
 {
     using System.Linq;
 
@@ -8,35 +6,23 @@ namespace BowlingKata.Source
     {
         public int CalculateScore(string scoreboard)
         {
-            var firstThrow = scoreboard.First();
-            var secondThrow = scoreboard.Skip(1).First();
+            var firstThrow = scoreboard.First().ReplaceMissCharacter();
+            var secondThrow = scoreboard.Skip(1).First().ReplaceMissCharacter();
+            var thirdThrow = scoreboard.Skip(3).First().ReplaceMissCharacter();
 
-            var thirdThrow = scoreboard.Skip(3).First();
-
-            return AddValues(firstThrow, secondThrow, thirdThrow);
-        }
-
-        private static int AddValues(char firstThrow, char secondThrow, char thirdThrow)
-        {
-            if (firstThrow == '-')
-            {
-                firstThrow = '0';
-            }
-
-            if (secondThrow == '-')
-            {
-                secondThrow = '0';
-            }
-
-            if (thirdThrow == '-')
-            {
-                thirdThrow = '0';
-            }
-
-            return int.Parse(firstThrow.ToString()) 
-                   + int.Parse(secondThrow.ToString()) 
-                   + int.Parse(thirdThrow.ToString());
+            return (firstThrow + secondThrow + thirdThrow);
         }
 
     }
+
+    internal static class BowlingExtensions
+    {
+        internal static int ReplaceMissCharacter(this char toReplace)
+        {
+            return toReplace == '-' 
+                ? 0 
+                : int.Parse(toReplace.ToString());
+        }
+    }
+
 }
