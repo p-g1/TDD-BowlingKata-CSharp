@@ -31,6 +31,7 @@ namespace BowlingKata.Tests
         }
 
         [TestCase("22|1-|--|--|--|--|--|--|--|--||--", 5)]
+        [TestCase("22|13|--|--|--|--|--|--|--|--||--", 8)]
         public void ReturnExpectedScore_WhenCalculatingTwoFrames_GivenScoreBoardThreeThrows(string scoreBoard,
             int expectedScore)
         {

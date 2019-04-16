@@ -9,8 +9,9 @@
             var firstThrow = scoreboard.First().ReplaceMissCharacter();
             var secondThrow = scoreboard.Skip(1).First().ReplaceMissCharacter();
             var thirdThrow = scoreboard.Skip(3).First().ReplaceMissCharacter();
+            var fourthThrow = scoreboard.Skip(4).First().ReplaceMissCharacter();
 
-            return (firstThrow + secondThrow + thirdThrow);
+            return (firstThrow + secondThrow + thirdThrow + fourthThrow);
         }
 
     }
