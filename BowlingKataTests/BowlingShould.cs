@@ -42,6 +42,7 @@ namespace BowlingKata.Tests
         }
 
         [TestCase("X-|--|--|--|--|--|--|--|--|--||--", 10)]
+        [TestCase("X-|1-|--|--|--|--|--|--|--|--||--", 12)]
         public void ReturnExpectedScore_WhenCalculatingScore_GivenSomeStrikes(string scoreBoard,
             int expectedResult)
         {
