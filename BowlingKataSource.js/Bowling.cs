@@ -1,4 +1,7 @@
-﻿namespace BowlingKata.Source
+﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
+
+namespace BowlingKata.Source
 {
     using System.Linq;
 
@@ -6,18 +9,18 @@
     {
         public int CalculateScore(string scoreboard)
         {
-            var frames = scoreboard.Split('|');
+            var frames = scoreboard.Split('|').ToList();
+
+            var framePinCount = frames.Select(frame => frame.Select(roll => roll.ParseThrowCharacters()));
 
             var score = 0;
 
-            foreach (var frame in frames)
+            foreach (var frame in framePinCount)
             {
-                if (string.IsNullOrEmpty(frame))
-                {
-                    continue;
-                }
-                var firstThrow = frame.First().ParseThrowCharacters();
-                var secondThrow = frame.Last().ParseThrowCharacters();
+                if (!frame.Any()) continue;
+
+                var firstThrow = frame.First();
+                var secondThrow = frame.Last();
 
                 score += (firstThrow + secondThrow);
             }
@@ -25,7 +28,15 @@
             return score;
         }
 
+        public IEnumerable<IEnumerable<int>> Temp(IEnumerable<string> frames)
+        {
+            return frames.Select(frame => frame.Select(roll => roll.ParseThrowCharacters()));
+            
+        }
+
     }
+
+
 
     internal static class BowlingExtensions
     {
