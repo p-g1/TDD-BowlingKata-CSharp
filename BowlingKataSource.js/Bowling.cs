@@ -9,66 +9,52 @@
         {
             var frames = scoreboard.Split('|').ToList();
             var framesPinCount = ParseFramesToScore(frames).ToList();
-            var framesRollToDouble = ParseRollsToDouble(frames);
-            var framesRollToTreble = ParseRollsToTreble(frames);
+
+            var toDouble = Double(framesPinCount);
+            var toTreble = Treble(framesPinCount);
+            
             var pinScore = framesPinCount.Where(frame => frame.Any()).Sum(frame => frame.Sum());
-            return pinScore + CalculateStrikeEffects(framesPinCount, framesRollToDouble) + CalculateStrikeEffects(framesPinCount, framesRollToTreble);
-        }
-
-        public int CalculateStrikeEffects(IEnumerable<IEnumerable<int>> pinScores, IEnumerable<IEnumerable<bool>> flags)
-        {
-            var flatPinScores = pinScores.SelectMany(x => x);
-            var flatFlags = flags.SelectMany(x => x);
-
-            return flatFlags.Zip(flatPinScores, (flag,score) => flag ? score : 0 ).Sum();
+            return  pinScore + toDouble + toTreble;
         }
 
         public IEnumerable<IEnumerable<int>> ParseFramesToScore(IEnumerable<string> frames)
         {
             return frames.Select(frame => frame.Select(roll => roll.ParseThrowCharacters()));
-            
         }
 
-        public IEnumerable<IEnumerable<bool>> ParseRollsToDouble(IEnumerable<string> frames)
+        public int Double(List<IEnumerable<int>> framesPinCount)
         {
             var previousFrameWasStrike = false;
+            var result = new List<int>();
 
-            var result = new List<IEnumerable<bool>>();
-
-            foreach (var frame in frames)
+            foreach (var frame in framesPinCount)
             {
-                result.Add(new List<bool> {previousFrameWasStrike, previousFrameWasStrike});
+                if (!frame.Any()) continue;
+                result.Add((previousFrameWasStrike ? frame.First() : 0) + (previousFrameWasStrike ? frame.Last() : 0 ));
                 previousFrameWasStrike = frame.IsStrike();
             }
-
-            return result;
+            return result.Sum();
         }
 
-        public IEnumerable<IEnumerable<bool>> ParseRollsToTreble(IEnumerable<string> frames)
-        {
-            
 
+        public int Treble(List<IEnumerable<int>> framesPinCount)
+        {
             var previousFrameWasStrike = false;
             var previousPlusOneFrameWasStrike = false;
 
-            var result = new List<IEnumerable<bool>>();
+            var result = new List<int>();
 
-            foreach (var frame in frames)
+            foreach (var frame in framesPinCount)
             {
-
-                result.Add(new List<bool> { previousFrameWasStrike && previousPlusOneFrameWasStrike, false });
+                if (!frame.Any()) continue;
+                result.Add(previousFrameWasStrike && previousPlusOneFrameWasStrike ? frame.First() : 0);
                 previousPlusOneFrameWasStrike = previousFrameWasStrike;
                 previousFrameWasStrike = frame.IsStrike();
                 
             }
-
-            return result;
-
-
+            return result.Sum();
         }
-
     }
-
 
 
     internal static class BowlingExtensions
@@ -91,9 +77,14 @@
             return int.Parse(toReplace.ToString());
         }
 
+        internal static bool IsStrike(this IEnumerable<int> frame)
+        {
+            return frame.First() == 10;
+        }
+
         internal static bool IsStrike(this string frame)
         {
-            return frame.Any(roll => roll == Strike);
+            return frame.Any(role => role == Strike);
         }
 
     }
