@@ -2,12 +2,13 @@
 {
     using System.Linq;
     using System.Collections.Generic;
+    using System;
 
     public class Bowling
     {
         public int CalculateScore(string scoreboard)
         {
-            var frames = scoreboard.Split('|').ToList();
+            var frames = scoreboard.Split(new []{'|'},StringSplitOptions.RemoveEmptyEntries).ToList();
             var framesPinCount = ParseFramesToScore(frames).ToList();
 
             var toDouble = Double(framesPinCount);
@@ -19,7 +20,7 @@
 
         public IEnumerable<IEnumerable<int>> ParseFramesToScore(IEnumerable<string> frames)
         {
-            return frames.Select(frame => frame.Select(roll => roll.ParseThrowCharacters()));
+            return frames.Select(frame => frame.ParseThrowCharacters());
         }
 
         public int Double(List<IEnumerable<int>> framesPinCount)
@@ -61,6 +62,7 @@
     {
         private const char Miss = '-';
         private const char Strike = 'X';
+        private const char Spare = '/';
 
         internal static int ParseThrowCharacters(this char toReplace)
         {
@@ -77,14 +79,18 @@
             return int.Parse(toReplace.ToString());
         }
 
+        internal static IEnumerable<int> ParseThrowCharacters(this string toReplace)
+        {
+            var firstRoll = toReplace.First().ParseThrowCharacters();
+
+            var secondRoll = toReplace.Last() == Spare ? 10 : toReplace.Last().ParseThrowCharacters();
+
+            return new List<int>{firstRoll,secondRoll};
+        }
+
         internal static bool IsStrike(this IEnumerable<int> frame)
         {
             return frame.First() == 10;
-        }
-
-        internal static bool IsStrike(this string frame)
-        {
-            return frame.Any(role => role == Strike);
         }
 
     }

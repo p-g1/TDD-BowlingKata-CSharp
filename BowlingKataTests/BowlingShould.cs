@@ -54,5 +54,14 @@ namespace BowlingKata.Tests
                 .CalculateScore(scoreBoard)
                 .Should().Be(expectedResult);
         }
+
+        [TestCase("-/|--|--|--|--|--|--|--|--|--||--", 10)]      
+        public void ReturnExpectedScore_WhenCalculatingScore_GivenSomeSpares(string scoreBoard,
+            int expectedResult)
+        {
+            new Bowling()
+                .CalculateScore(scoreBoard)
+                .Should().Be(expectedResult);
+        }
     }
 }
