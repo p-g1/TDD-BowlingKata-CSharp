@@ -8,14 +8,17 @@
     {
         public int CalculateScore(string scoreboard)
         {
-            var frames = scoreboard.Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries).ToList();
+            var splitScoreBoard = scoreboard.Split(new []{"||"},StringSplitOptions.None);
+            var finalFrame = splitScoreBoard[1];
+            
+            var frames = splitScoreBoard[0].Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries).ToList();
             var framesPinCount = ParseFramesToScore(frames).ToList();
 
             var toDouble = Double(framesPinCount);
             var toTreble = Treble(framesPinCount);
 
             var pinScore = framesPinCount.Where(frame => frame.Any()).Sum(frame => frame.Sum());
-            return pinScore + toDouble + toTreble;
+            return pinScore + toDouble + toTreble + finalFrame.ParseThrowCharacters().Sum();
         }
 
         public IEnumerable<IEnumerable<int>> ParseFramesToScore(IEnumerable<string> frames)
@@ -39,6 +42,8 @@
                 previousFrameWasStrike = frame.IsStrike();
                 previousFrameWasSpare = frame.IsSpare();
             }
+
+
 
             return result.Sum();
         }

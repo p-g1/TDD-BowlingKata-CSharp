@@ -71,6 +71,10 @@ namespace BowlingKata.Tests
 
         [TestCase("2/|-9|9/|X-|2-|--|--|--|--|--||--", 53)]
         [TestCase("2/|-9|9/|X-|2-|X-|1/|X-|9/|X-||--", 143)]
+        [TestCase("2/|-9|9/|X-|2-|X-|1/|X-|9/|X-||23", 148)]
+        [TestCase("X-|X-|X-|X-|X-|X-|X-|X-|X-|X-||--", 270)]
+        [TestCase("X-|X-|X-|X-|X-|X-|X-|X-|X-|X-||X-", 290)]
+        [TestCase("X-|X-|X-|X-|X-|X-|X-|X-|X-|X-||XX", 300)]
         public void ReturnExpectedScore_WhenCalculatingScore_GivenSomeSparesAndStrikes(string scoreBoard,
             int expectedResult)
         {
