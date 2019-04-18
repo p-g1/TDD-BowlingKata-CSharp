@@ -8,14 +8,11 @@
         public int CalculateScore(string scoreboard)
         {
             var frames = scoreboard.Split('|').ToList();
-
             var framesPinCount = ParseFramesToScore(frames).ToList();
-
-            var framesRollToDouble = ParseFramesToDouble(frames);
-
+            var framesRollToDouble = ParseRollsToDouble(frames);
+            var framesRollToTreble = ParseRollsToTreble(frames);
             var pinScore = framesPinCount.Where(frame => frame.Any()).Sum(frame => frame.Sum());
-
-            return pinScore + CalculateDouble(framesPinCount, framesRollToDouble);
+            return pinScore + CalculateDouble(framesPinCount, framesRollToDouble) + CalculateTreble(framesPinCount, framesRollToTreble);
         }
 
         public int CalculateDouble(IEnumerable<IEnumerable<int>> pinScores, IEnumerable<IEnumerable<bool>> doubleFlags)
@@ -26,6 +23,14 @@
             return flatDoubleFlags.Zip(flatPinScores, ApplyAdditionalScores).Sum();
         }
 
+        public int CalculateTreble(IEnumerable<IEnumerable<int>> pinScores, IEnumerable<IEnumerable<bool>> trebleFlags)
+        {
+            var flatPinScores = pinScores.SelectMany(x => x);
+            var flatTrebleFlags = trebleFlags.SelectMany(x => x);
+
+            return flatTrebleFlags.Zip(flatPinScores, ApplyAdditionalScores).Sum();
+        }
+
         private static int ApplyAdditionalScores(bool flag, int score) => flag ? score : 0;
 
         public IEnumerable<IEnumerable<int>> ParseFramesToScore(IEnumerable<string> frames)
@@ -34,7 +39,7 @@
             
         }
 
-        public IEnumerable<IEnumerable<bool>> ParseFramesToDouble(IEnumerable<string> frames)
+        public IEnumerable<IEnumerable<bool>> ParseRollsToDouble(IEnumerable<string> frames)
         {
             var previousFrameWasStrike = false;
 
@@ -47,6 +52,29 @@
             }
 
             return result;
+        }
+
+        public IEnumerable<IEnumerable<bool>> ParseRollsToTreble(IEnumerable<string> frames)
+        {
+            
+
+            var previousFrameWasStrike = false;
+            var previousPlusOneFrameWasStrike = false;
+
+            var result = new List<IEnumerable<bool>>();
+
+            foreach (var frame in frames)
+            {
+
+                result.Add(new List<bool> { previousFrameWasStrike && previousPlusOneFrameWasStrike, false });
+                previousPlusOneFrameWasStrike = previousFrameWasStrike;
+                previousFrameWasStrike = frame.IsStrike();
+                
+            }
+
+            return result;
+
+
         }
 
     }
