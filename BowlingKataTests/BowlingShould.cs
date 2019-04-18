@@ -56,7 +56,21 @@ namespace BowlingKata.Tests
         }
 
         [TestCase("-/|--|--|--|--|--|--|--|--|--||--", 10)]      
+        [TestCase("2/|--|--|--|--|--|--|--|--|--||--", 10)]      
+        [TestCase("2/|1-|--|--|--|--|--|--|--|--||--", 12)]
+        [TestCase("2/|-9|--|--|--|--|--|--|--|--||--", 19)]
+        [TestCase("2/|-9|9/|9-|--|--|--|--|--|--||--", 47)]
+        [TestCase("2/|-9|9/|9/|2-|--|--|--|--|--||--", 52)]
         public void ReturnExpectedScore_WhenCalculatingScore_GivenSomeSpares(string scoreBoard,
+            int expectedResult)
+        {
+            new Bowling()
+                .CalculateScore(scoreBoard)
+                .Should().Be(expectedResult);
+        }
+
+        [TestCase("2/|-9|9/|X-|2-|--|--|--|--|--||--", 53)]
+        public void ReturnExpectedScore_WhenCalculatingScore_GivenSomeSparesAndStrikes(string scoreBoard,
             int expectedResult)
         {
             new Bowling()

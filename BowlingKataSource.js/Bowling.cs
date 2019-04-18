@@ -8,14 +8,14 @@
     {
         public int CalculateScore(string scoreboard)
         {
-            var frames = scoreboard.Split(new []{'|'},StringSplitOptions.RemoveEmptyEntries).ToList();
+            var frames = scoreboard.Split(new[] {'|'}, StringSplitOptions.RemoveEmptyEntries).ToList();
             var framesPinCount = ParseFramesToScore(frames).ToList();
 
             var toDouble = Double(framesPinCount);
             var toTreble = Treble(framesPinCount);
-            
+
             var pinScore = framesPinCount.Where(frame => frame.Any()).Sum(frame => frame.Sum());
-            return  pinScore + toDouble + toTreble;
+            return pinScore + toDouble + toTreble;
         }
 
         public IEnumerable<IEnumerable<int>> ParseFramesToScore(IEnumerable<string> frames)
@@ -26,14 +26,20 @@
         public int Double(List<IEnumerable<int>> framesPinCount)
         {
             var previousFrameWasStrike = false;
+            var previousFrameWasSpare = false;
+
             var result = new List<int>();
 
             foreach (var frame in framesPinCount)
             {
                 if (!frame.Any()) continue;
-                result.Add((previousFrameWasStrike ? frame.First() : 0) + (previousFrameWasStrike ? frame.Last() : 0 ));
+
+                result.Add(((previousFrameWasStrike || previousFrameWasSpare )? frame.First() : 0) + (previousFrameWasStrike ? frame.Last() : 0));
+
                 previousFrameWasStrike = frame.IsStrike();
+                previousFrameWasSpare = frame.IsSpare();
             }
+
             return result.Sum();
         }
 
@@ -51,8 +57,9 @@
                 result.Add(previousFrameWasStrike && previousPlusOneFrameWasStrike ? frame.First() : 0);
                 previousPlusOneFrameWasStrike = previousFrameWasStrike;
                 previousFrameWasStrike = frame.IsStrike();
-                
+
             }
+
             return result.Sum();
         }
     }
@@ -83,14 +90,21 @@
         {
             var firstRoll = toReplace.First().ParseThrowCharacters();
 
-            var secondRoll = toReplace.Last() == Spare ? 10 : toReplace.Last().ParseThrowCharacters();
+            var secondRoll = toReplace.Last() == Spare
+                ? 10 - firstRoll
+                : toReplace.Last().ParseThrowCharacters();
 
-            return new List<int>{firstRoll,secondRoll};
+            return new List<int> {firstRoll, secondRoll};
         }
 
         internal static bool IsStrike(this IEnumerable<int> frame)
         {
             return frame.First() == 10;
+        }
+
+        internal static bool IsSpare(this IEnumerable<int> frame)
+        {
+            return frame.First() != 10 && frame.Sum()==10;
         }
 
     }
