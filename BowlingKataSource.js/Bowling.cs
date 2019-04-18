@@ -1,12 +1,7 @@
-﻿using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
-using System.Runtime.Serialization.Formatters;
-using System.Security.Cryptography.X509Certificates;
-
-namespace BowlingKata.Source
+﻿namespace BowlingKata.Source
 {
     using System.Linq;
+    using System.Collections.Generic;
 
     public class Bowling
     {
@@ -14,7 +9,7 @@ namespace BowlingKata.Source
         {
             var frames = scoreboard.Split('|').ToList();
 
-            var framesPinCount = ParseFramesToScore(frames);
+            var framesPinCount = ParseFramesToScore(frames).ToList();
 
             var framesRollToDouble = ParseFramesToDouble(frames);
 
