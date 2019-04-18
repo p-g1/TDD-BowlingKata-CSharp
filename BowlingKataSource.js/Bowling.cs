@@ -24,10 +24,7 @@ namespace BowlingKata.Source
             {
                 if (!frame.Any()) continue;
 
-                var firstThrow = frame.First();
-                var secondThrow = frame.Last();
-
-                pinScore += (firstThrow + secondThrow);
+                pinScore += frame.Sum();
             }
 
             return pinScore + CalculateDouble(framesPinCount, framesRollToDouble);
@@ -41,7 +38,7 @@ namespace BowlingKata.Source
             return flatDoubleFlags.Zip(flatPinScores, ApplyAdditionalScores).Sum();
         }
 
-        public int ApplyAdditionalScores(bool flag, int score) => flag ? score : 0;
+        private static int ApplyAdditionalScores(bool flag, int score) => flag ? score : 0;
 
         public IEnumerable<IEnumerable<int>> ParseFramesToScore(IEnumerable<string> frames)
         {
