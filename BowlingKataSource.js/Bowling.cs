@@ -20,10 +20,8 @@
             var flatPinScores = pinScores.SelectMany(x => x);
             var flatFlags = flags.SelectMany(x => x);
 
-            return flatFlags.Zip(flatPinScores, ApplyAdditionalScores).Sum();
+            return flatFlags.Zip(flatPinScores, (flag,score) => flag ? score : 0 ).Sum();
         }
-
-        private static int ApplyAdditionalScores(bool flag, int score) => flag ? score : 0;
 
         public IEnumerable<IEnumerable<int>> ParseFramesToScore(IEnumerable<string> frames)
         {
