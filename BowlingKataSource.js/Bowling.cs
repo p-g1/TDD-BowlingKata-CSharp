@@ -18,14 +18,7 @@ namespace BowlingKata.Source
 
             var framesRollToDouble = ParseFramesToDouble(frames);
 
-            var pinScore = 0;
-
-            foreach (var frame in framesPinCount)
-            {
-                if (!frame.Any()) continue;
-
-                pinScore += frame.Sum();
-            }
+            var pinScore = framesPinCount.Where(frame => frame.Any()).Sum(frame => frame.Sum());
 
             return pinScore + CalculateDouble(framesPinCount, framesRollToDouble);
         }
