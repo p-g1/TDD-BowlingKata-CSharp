@@ -11,7 +11,7 @@ namespace BowlingKata.Source
         {
             var frames = scoreboard.Split('|').ToList();
 
-            var framePinCount = frames.Select(frame => frame.Select(roll => roll.ParseThrowCharacters()));
+            var framePinCount = ParseFrames(frames);
 
             var score = 0;
 
@@ -28,7 +28,7 @@ namespace BowlingKata.Source
             return score;
         }
 
-        public IEnumerable<IEnumerable<int>> Temp(IEnumerable<string> frames)
+        public IEnumerable<IEnumerable<int>> ParseFrames(IEnumerable<string> frames)
         {
             return frames.Select(frame => frame.Select(roll => roll.ParseThrowCharacters()));
             
